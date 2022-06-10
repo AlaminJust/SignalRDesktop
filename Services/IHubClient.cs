@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using SignalRDesktop.Services;
+using System.Threading.Tasks;
 
 namespace SignalRApplication.Services
 {
     public interface IHubClient
     {
-        Task BroadcastMessage(string message);
+        Task BroadcastMessageAsync(Message message);
     }
 }

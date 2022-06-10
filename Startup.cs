@@ -1,17 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using SignalRApplication.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using SignalRDesktop.Services;
 
 namespace SignalRDesktop
 {
@@ -33,6 +27,14 @@ namespace SignalRDesktop
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SignalRDesktop", Version = "v1" });
             });
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+            {
+                builder.AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .WithOrigins();
+            }));
+            services.AddScoped<SignalRService>();
             services.AddSignalR();
         }
 

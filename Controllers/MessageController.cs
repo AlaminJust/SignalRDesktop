@@ -1,29 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
 using SignalRApplication.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using SignalRDesktop.Services;
 using System.Threading.Tasks;
 
 namespace SignalRDesktop.Controllers
 {
     [ApiController]
-    [Route("message")]
+    [Route("messages")]
     public class MessageController : ControllerBase
     {
-        private readonly IHubContext<MessageHub, IHubClient> _hubContext;
+        private readonly SignalRService _signalRService;
 
-        public MessageController(IHubContext<MessageHub, IHubClient> hubContext)
+        public MessageController(SignalRService signalRService)
         {
-            _hubContext = hubContext;
+            _signalRService = signalRService;
         }
 
-        [HttpGet, Route("send")]
-        public async Task<IActionResult> Get()
+        [HttpPost, Route("send")]
+        public async Task<IActionResult> Get(Message message)
         {
-            await _hubContext.Clients.All.BroadcastMessage("Hello");
+            await _signalRService.SendAllAsync(message);
             return Ok();
         }
     }
